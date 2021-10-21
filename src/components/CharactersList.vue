@@ -5,13 +5,12 @@
       :key="character.id+character.name"
       col="3"
       class="ma-5"
-      max-width="344"
+      width="350"
     >
       <v-img
         :src="character.thumbnail.path ? `${character.thumbnail.path}/${imgSize}` : defaultImg"
         class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-        height="200px"
       >
         <v-card-title>{{ character.name }}</v-card-title>
       </v-img>
@@ -27,7 +26,7 @@
           icon
           @click="showInfo(index)"
         >
-          <v-icon>fas fa-heart</v-icon>
+          <v-icon>{{ index === selectedIndex ? 'fas fa-arrow-up' : 'fas fa-arrow-down' }}</v-icon>
         </v-btn>
       </v-card-actions>
 
@@ -54,12 +53,14 @@ import axios from "axios";
 export default {
   name: "CharactersList",
   data: () => ({
+    //url params
     url: "http://gateway.marvel.com/v1/public/characters",
     offset: "?offset=100",
     ts: "?ts=1519211809934",
     publicKey: "&apikey=a9d50df97a5f822a7edcd9afbe4e357a",
     hash: "&hash=a8add32b487ad7a6951689990256b007",
     imgSize: "standard_large.jpg",
+    //layouts options
     characters: [],
     selectedIndex : null,
     selectedHeroes: [],
@@ -79,6 +80,11 @@ export default {
       console.log(this.characters)
     },
     showInfo(index){
+      if(this.selectedIndex == index) {
+        this.selectedIndex = null
+      }else {
+        this.selectedIndex = index
+      }
     console.log(this.selectedIndex)
     console.log(index)
     }
