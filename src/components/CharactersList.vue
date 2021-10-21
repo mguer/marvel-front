@@ -1,7 +1,7 @@
 <template>
   <v-row class="justify-center">
     <v-card
-      v-for="character in characters.data.results"
+      v-for="character in characters"
       :key="character.id"
       col="3"
       class="ma-5"
@@ -13,7 +13,7 @@
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="200px"
       >
-        <v-card-title :v-text="character.name"></v-card-title>
+        <v-card-title >{{ character.name }}</v-card-title>
       </v-img>
 
       <v-card-actions>
@@ -43,19 +43,24 @@ export default {
     publicKey: "&apikey=a9d50df97a5f822a7edcd9afbe4e357a",
     hash: "&hash=a8add32b487ad7a6951689990256b007",
     characters: [],
-    selectedHeroes : [],
+    selectedHeroes: [],
     defaultImg:
-      "https://blog.comic-con-paris.com/wp-content/uploads/2019/07/super-heros-marvel-min.jpg"
+      "https://blog.comic-con-paris.com/wp-content/uploads/2019/07/super-heros-marvel-min.jpg",
   }),
-  async created() {
-    await axios
-      .get(this.url + this.ts + this.publicKey + this.hash)
-      .then((response) => {
-        this.characters = response.data;
-      });
-    console.log(this.url + this.ts + this.publicKey + this.hash);
-    console.log(this.characters.data.results);
-    console.log(this.characters);
+  methods: {
+    async fetchData() {
+      await axios
+        .get(this.url + this.ts + this.publicKey + this.hash)
+        .then((response) => {
+          this.characters = response.data.data.results;
+          response.data.data.results.forEach((item) => {
+            this.characters.push(item);
+          });
+        });
+    },
+  },
+  created() {
+    this.fetchData();
   },
 };
 </script>

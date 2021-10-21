@@ -1,6 +1,6 @@
 <template>
   <v-container>
-  <characters-list />
+    <characters-list />
   </v-container>
 </template>
 
