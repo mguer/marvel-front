@@ -1,5 +1,7 @@
 <template>
+  <v-container>
   <characters-list />
+  </v-container>
 </template>
 
 <script>
