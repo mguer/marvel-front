@@ -8,6 +8,7 @@
       width="350"
     >
       <v-img
+
         :src="character.thumbnail.path ? `${character.thumbnail.path}/${imgSize}` : defaultImg"
         class="white--text align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -35,11 +36,13 @@
           <v-divider></v-divider>
 
           <v-card-text>
-            I'm a thing. But, like most politicians, he promised more than he
-            could deliver. You won't have time for sleeping, soldier, not with
-            all the bed making you'll be doing. Then we'll go with that data
-            file! Hey, you add a one and two zeros to that or we walk! You're
-            going to do his laundry? I've got to find a way to escape.
+            {{ character.description ? character.description : "pas de description"}}
+          </v-card-text>
+          <v-card-text>
+            nombre de comics : {{ character.comics.items.length }}
+          </v-card-text>
+          <v-card-text v-for=" (comics,index)  in character.comics.items.slice(0,3) " :key="comics.name">
+            {{ index + 1 }} : {{ comics.name }}
           </v-card-text>
         </div>
       </v-expand-transition>
@@ -75,6 +78,7 @@ export default {
           this.characters = response.data.data.results;
           response.data.data.results.forEach((item) => {
             this.characters.push(item);
+            console.log(item)
           });
         });
       console.log(this.characters)
