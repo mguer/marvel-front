@@ -3,27 +3,29 @@
     <v-card col="3" class="ma-5" width="350">
       <v-card-title>Mes personnages préférés</v-card-title>
       <v-list-item>
-        <v-list-item-content >
-          <p v-for="(hero, index) in bookmarkHeroes" :key="hero+index">{{ hero }}</p>
+        <v-list-item-content>
+          <p v-for="(hero, index) in bookmarkHeroes" :key="hero + index">
+            {{ hero }}
+          </p>
         </v-list-item-content>
       </v-list-item>
     </v-card>
 
     <v-card
-        v-for="(character, index) in characters"
-        :key="character.id + character.name + index"
-        col="3"
-        class="ma-5"
-        width="350"
+      v-for="(character, index) in characters"
+      :key="character.id + character.name + index"
+      col="3"
+      class="ma-5"
+      width="350"
     >
       <v-img
-          :src="
+        :src="
           character.thumbnail.path
             ? `${character.thumbnail.path}/${imgSize}`
             : defaultImg
         "
-          class="white--text align-end"
-          gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+        class="white--text align-end"
+        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
       >
         <v-card-title>{{ character.name }}</v-card-title>
       </v-img>
@@ -37,8 +39,8 @@
 
         <v-btn icon @click="showInfo(index)">
           <v-icon>{{
-              index === selectedIndex ? "fas fa-arrow-up" : "fas fa-arrow-down"
-            }}</v-icon>
+            index === selectedIndex ? "fas fa-arrow-up" : "fas fa-arrow-down"
+          }}</v-icon>
         </v-btn>
       </v-card-actions>
 
@@ -49,16 +51,16 @@
           <v-card-text>
             {{
               character.description
-                  ? character.description
-                  : "pas de description"
+                ? character.description
+                : "pas de description"
             }}
           </v-card-text>
           <v-card-text>
             nombre de comics : {{ character.comics.items.length }}
           </v-card-text>
           <v-card-text
-              v-for="(comics, index) in character.comics.items.slice(0, 3)"
-              :key="comics.name"
+            v-for="(comics, index) in character.comics.items.slice(0, 3)"
+            :key="comics.name"
           >
             {{ index + 1 }} : {{ comics.name }}
           </v-card-text>
@@ -87,23 +89,32 @@ export default {
     selectedIndex: null,
     bookmarkHeroes: [],
     defaultImg:
-        "https://blog.comic-con-paris.com/wp-content/uploads/2019/07/super-heros-marvel-min.jpg",
+      "https://blog.comic-con-paris.com/wp-content/uploads/2019/07/super-heros-marvel-min.jpg",
   }),
   methods: {
     async fetchData() {
       await axios
-          .get(this.url + this.limit + this.offset + this.ts + this.publicKey + this.hash)
-          .then((response) => {
-            this.characters = response.data.data.results;
-            response.data.data.results.forEach((item) => {
-              this.characters.push(item);
-              console.log(item);
-            });
+        .get(
+          this.url +
+            this.limit +
+            this.offset +
+            this.ts +
+            this.publicKey +
+            this.hash
+        )
+        .then((response) => {
+          this.characters = response.data.data.results;
+          response.data.data.results.forEach((item) => {
+            this.characters.push(item);
+            console.log(item);
           });
+        });
       console.log(this.characters);
     },
     showInfo(index) {
-      this.selectedIndex == index ? this.selectedIndex = null : this.selectedIndex = index ;
+      this.selectedIndex == index
+        ? (this.selectedIndex = null)
+        : (this.selectedIndex = index);
     },
     addToBookmark(hero) {
       if (!this.bookmarkHeroes.includes(hero)) {
